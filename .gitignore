@@ -1,32 +1,27 @@
-# Prerequisites
-*.d
+# ---------------------------------------------------
+# 모든 파일 기본 무시
+**
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# 폴더 구조 유지
+!*/
 
-# Precompiled Headers
-*.gch
-*.pch
+# 허용할 파일
+!**/*.cs
+!**/*.cpp
+!**/*.c
+!**/README.md
+!.gitignore     # ✅ .gitignore는 항상 추적
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# ---------------------------------------------------
+# 불필요한 시스템/개발 환경 폴더 무시
+.vs/
+FileContentIndex/
 
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+# ---------------------------------------------------
+# 일반적인 무시 항목 (선택 사항)
+*.log
+*.tmp
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
