@@ -53,7 +53,7 @@ void divide(vector<int>& ary, int lt, int rt)
 
 
 int main() {
-	int n = 10;
+	int n = 10, idx;
 	vector<int> ary(n);
 	random_device rd;
 	mt19937 gen(rd());
@@ -61,7 +61,7 @@ int main() {
 
 	for (int i = 0; i < 10; ++i) {
 		ary[i] = i + 1;
-		int idx = dis(gen) % (i + 1);
+		idx = dis(gen) % (i + 1);
 		swap(ary[i], ary[idx]);
 	}
 
