@@ -1,74 +1,92 @@
-#include <vector>
-#include <random>
+#include <queue>
+#include "Merge.h"
 
-using namespace std;
-
-void merge(vector<int>& ary, vector<int>& tmp, int lt, int mid, int rt)
+namespace algorithm
 {
-	int p1 = lt, p2 = mid + 1, p3 = lt;
-
-	while (p1 <= mid && p2 <= rt)
+	template <typename T>
+	void Merge<T>::Sorting(std::function<bool(T a, T b)> comparator) override
 	{
-		if (ary[p1] < ary[p2])
+		if (comparator != nullptr)
 		{
-			tmp[p3++] = ary[p1++];
+			this->sorting(this->m_list, this->m_count, comparator);
+		}
+		else if (true) //비교연산자가 구현되어 있는지 확인.
+		{
+			this->sorting(this->m_list, this->m_count, [](T a, T b) -> bool { return a < b; });
 		}
 		else
 		{
-			tmp[p3++] = ary[p2++];
+			//비교 연산자가 구현되어 있지 않다면 오류 출력
 		}
 	}
 
-	while (p1 <= mid)
+
+	template <typename T>
+	void Merge<T>::Sorting(T list[], const size_t length, std::function<bool(T a, T b)> comparator) override
 	{
-		tmp[p3++] = ary[p1++];
+		if (comparator != nullptr)
+		{
+			this->sorting(list, static_cast<int>(length), comparator);
+		}
+		else if (true) //비교연산자가 구현되어 있는지 확인.
+		{
+			this->sorting(list, static_cast<int>(length), [](T a, T b) -> bool { return a < b; });
+		}
+		else
+		{
+			//비교 연산자가 구현되어 있지 않다면 오류 출력
+		}
 	}
 
-	while (p2 <= rt)
+
+	template <typename T>
+	void Merge<T>::sorting(T list[], const int length, std::function<bool(T a, T b)> comparator)
 	{
-		tmp[p3++] = ary[p2++];
+		T* temp = new T[length];
+		assert(temp != nullptr);
+
+		int mid, right, l, r, k;
+
+		for (int width = 1; width < length; width *= 2)
+		{
+			for (int i = 0; i < length; i += 2 * width)
+			{
+				mid = std::min(i + width, length);
+				right = std::min(i + 2 * width, length);
+				l = i;
+				r = mid;
+				k = i;
+
+				while (l < mid && r < right)
+				{
+					if (comparator(list[l], list[r]))
+					{
+						temp[k++] = list[l++];
+					}
+					else
+					{
+						temp[k++] = list[r++];
+					}
+				}
+
+				while (l < mid)
+				{
+					temp[k++] = list[l++];
+				}
+
+				while (r < right)
+				{
+					temp[k++] = list[r++];
+				}
+			}
+
+			for (int i = 0; i < length; ++i)
+			{
+				list[i] = temp[i];
+			}
+		}
+
+		delete[] temp;
 	}
 
-	for (int i = lt; i <= rt; ++i)
-	{
-		ary[i] = tmp[i];
-	}
-}
-
-
-void divide(vector<int>& ary, int lt, int rt)
-{
-	vector<int> tmp(ary.size());
-
-	if (lt < rt)
-	{
-		int mid = (lt + rt) / 2;
-
-		divide(ary, lt, mid);
-		divide(ary, mid + 1, rt);
-
-		merge(ary, tmp, lt, mid, rt);
-	}
-}
-
-
-int main() {
-	int n = 10, idx;
-	vector<int> ary(n);
-	random_device rd;
-	mt19937 gen(rd());
-	uniform_int_distribution<int> dis(0, 99);
-
-	for (int i = 0; i < 10; ++i) {
-		ary[i] = i + 1;
-		idx = dis(gen) % (i + 1);
-		swap(ary[i], ary[idx]);
-	}
-
-	divide(ary, 0, n - 1);
-
-	for (int i = 0; i < 10; ++i) {
-		printf("%d ", ary[i]);
-	}
-	return 0;
 }
