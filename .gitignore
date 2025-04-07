@@ -9,6 +9,7 @@
 !**/*.cs
 !**/*.cpp
 !**/*.c
+!**/*.h
 !**/README.md
 !.gitignore     # ✅ .gitignore는 항상 추적
 
